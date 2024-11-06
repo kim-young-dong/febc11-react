@@ -96,9 +96,7 @@
         const $deleteButton = $li.appendChild(document.createElement("button"));
         $deleteButton.type = "button";
         $deleteButton.appendChild(document.createTextNode("삭제"));
-        $deleteButton.addEventListener("click", () => {
-          deleteItem(item.no);
-        });
+        $deleteButton.setAttribute("onclick", `deleteItem(${item.no})`);
         $li.appendChild($deleteButton);
 
         $li.setAttribute("data-no", item.no);
@@ -168,8 +166,8 @@
 
       // 할일 삭제
       function deleteItem(no) {
-        const $li = document.querySelector(`li[data-no="${no}"]`);
-        $li.remove();
+        const $selectedItem = document.querySelector(`li[data-no="${no}"]`);
+        $selectedItem.remove();
         itemList.splice(itemList.findIndex((item) => item.no === no), 1);
       }
     </script>

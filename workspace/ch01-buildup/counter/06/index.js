@@ -19,7 +19,12 @@ class Renos {
     // Set properties
     if (props) {
       for (const attrName in props) {
-        element.setAttribute(attrName, props[attrName]);
+        const value = props[attrName];
+        if (attrName.startsWith("on")) {
+          element.addEventListener(attrName.slice(2).toLowerCase(), value);
+        } else {
+          element.setAttribute(attrName, value);
+        }
       }
     }
     // Object.keys(props).forEach((key) => {

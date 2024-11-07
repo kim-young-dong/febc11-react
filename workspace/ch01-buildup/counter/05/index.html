@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Counter</title>
+  </head>
+  <body>
+    <div id="root"></div>
+    <!-- <div id="app">
+      <header>
+        <h1>Counter - HTML + JS</h1>
+        <p>파일 경로: <span id="filepath"></span></p>
+      </header>
+      <div id="counter">
+        <button type="button" onclick="handleDown()">-</button>
+        <button type="button" onclick="handleReset(event)">0</button>
+        <button type="button" onclick="handleUp()">+</button>
+        <span>0</span>
+      </div>
+    </div> -->
+
+    <script type="module">
+      // type="module"을 사용하면 ES6 모듈을 사용할 수 있습니다.
+      // module은 기본적으로 비동기로 동작합니다. HTML 파싱이 완료된 후 실행됩니다.
+      import Renos from "./index.js";
+      // UI 구조 생성
+
+      function Header() {
+        return Renos.createElement(
+          "header",
+          null,
+          Renos.createElement("h1", null, "Counter - HTML + JS"),
+          Renos.createElement(
+            "p",
+            null,
+            "파일 경로: ",
+            Renos.createElement(
+              "span",
+              { id: "filepath" },
+              `ch${document.URL.split("/ch")[1]}index.html`
+            )
+          )
+        );
+      }
+
+      function Counter() {
+        // 상태 관리
+        let count = 0;
+
+        const render = () => {
+          const $counterSpan = document.querySelector("#counter > span");
+          $counterSpan.textContent = count;
+        };
+
+        const handleDown = () => {
+          count--;
+          render();
+        };
+        const handleUp = () => {
+          count++;
+          render();
+        };
+        const handleReset = (event) => {
+          count = 0;
+          render();
+        };
+
+        return Renos.createElement(
+          "div",
+          { id: "counter" },
+          Renos.createElement(
+            "button",
+            { type: "button", onclick: handleDown },
+            "-"
+          ),
+          Renos.createElement(
+            "button",
+            { type: "button", onclick: (event) => handleReset(event) },
+            "0"
+          ),
+          Renos.createElement(
+            "button",
+            { type: "button", onclick: handleUp },
+            "+"
+          ),
+          Renos.createElement("span", null, "0")
+        );
+      }
+
+      const App = Renos.createElement("div", { id: "app" }, Header, Counter);
+
+      Renos.render(App);
+      // document.body.appendChild(App);
+    </script>
+  </body>
+</html>

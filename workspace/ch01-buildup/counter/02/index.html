@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Counter</title>
+  </head>
+  <body>
+    <!-- <div id="app">
+      <header>
+        <h1>Counter - HTML + JS</h1>
+        <p>파일 경로: <span id="filepath"></span></p>
+      </header>
+      <div id="counter">
+        <button type="button" onclick="handleDown()">-</button>
+        <button type="button" onclick="handleReset(event)">0</button>
+        <button type="button" onclick="handleUp()">+</button>
+        <span>0</span>
+      </div>
+    </div> -->
+
+    <script type="text/javascript">
+      // UI 구조 생성
+
+      const $app = document.createElement("div");
+      $app.id = "app";
+
+      const $header = document.createElement("header");
+      const $h1 = document.createElement("h1");
+      const $h1Text = document.createTextNode("Counter - HTML + JS");
+      $h1.appendChild($h1Text);
+
+      const $p = document.createElement("p");
+      const $pText = document.createTextNode("파일 경로: ");
+      $p.appendChild($pText);
+
+      const $filepathSpan = document.createElement("span");
+      $filepathSpan.id = "filepath";
+      $p.appendChild($filepathSpan);
+
+      const $downBtn = document.createElement("button");
+      const $downBtnText = document.createTextNode("-");
+      $downBtn.appendChild($downBtnText);
+      $downBtn.type = "button";
+      $downBtn.setAttribute("onclick", "handleDown()");
+
+      // <button type="button" onclick="handleReset(event)">0</button>
+      const $resetBtn = document.createElement("button");
+      const $resetBtnText = document.createTextNode("0");
+      $resetBtn.appendChild($resetBtnText);
+      $resetBtn.type = "button";
+      $resetBtn.setAttribute("onclick", "handleReset(event)");
+
+      // <button type="button" onclick="handleUp()">+</button>
+      const $upBtn = document.createElement("button");
+      const $upBtnText = document.createTextNode("+");
+      $upBtn.appendChild($upBtnText);
+      $upBtn.type = "button";
+      $upBtn.setAttribute("onclick", "handleUp()");
+
+      // <span>0</span>
+      const $counterSpan = document.createElement("span");
+      const $counterSpanText = document.createTextNode("0");
+      $counterSpan.appendChild($counterSpanText);
+
+      const $counter = document.createElement("div");
+      $counter.id = "counter";
+      $counter.appendChild($downBtn);
+      $counter.appendChild($resetBtn);
+      $counter.appendChild($upBtn);
+      $counter.appendChild($counterSpan);
+
+      document.body.appendChild($app);
+      $app.appendChild($header);
+      $header.appendChild($h1);
+      $header.appendChild($p);
+      $app.appendChild($counter);
+    </script>
+
+    <script type="text/javascript">
+      document.querySelector("#filepath").textContent = `ch${
+        document.URL.split("/ch")[1]
+      }index.html`;
+    </script>
+
+    <script type="text/javascript">
+      // 상태 관리
+
+      let count = 0;
+
+      const handleDown = () => {
+        count--;
+        render();
+      };
+      const handleUp = () => {
+        count++;
+        render();
+      };
+      const handleReset = (event) => {
+        count = 0;
+        render();
+      };
+
+      const render = () => {
+        const $counterSpan = document.querySelector("#counter > span");
+        $counterSpan.textContent = count;
+      };
+
+      render();
+    </script>
+  </body>
+</html>

@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Counter</title>
+    <style>
+      #counter {
+        margin: 20px;
+        padding: 20px;
+        text-align: center;
+      }
+      button {
+        margin: 0 5px;
+        padding: 5px 15px;
+        font-size: 18px;
+      }
+      span {
+        margin-left: 10px;
+        font-size: 18px;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="root"></div>
+
+    <script type="module">
+      import Renos from "./index.js";
+      import { useState } from "./useState.js";
+
+      function App() {
+        function Header() {
+          return Renos.createElement(
+            "header",
+            null,
+            Renos.createElement("h1", null, "Counter - HTML + JS"),
+            Renos.createElement(
+              "p",
+              null,
+              "파일 경로: ",
+              Renos.createElement("span", { id: "filepath" }, `index.html`)
+            )
+          );
+        }
+
+        function Counter() {
+          const [count, setCount, useSubscribe] = useState(0);
+
+          const handleDown = () => {
+            setCount((prev) => prev - 1);
+          };
+          const handleUp = () => {
+            setCount((prev) => prev + 1);
+            console.log(count());
+          };
+          const handleReset = () => {
+            setCount(0);
+          };
+
+          // 구독 설정을 즉시 실행
+          useSubscribe(() => {
+            // 다음 틱에서 렌더링 실행
+            requestAnimationFrame(() => {
+              root.render(App);
+            });
+          });
+
+          return Renos.createElement(
+            "div",
+            { id: "counter" },
+            Renos.createElement(
+              "button",
+              { type: "button", onClick: handleDown },
+              "-"
+            ),
+            Renos.createElement(
+              "button",
+              { type: "button", onClick: handleReset },
+              "0"
+            ),
+            Renos.createElement(
+              "button",
+              { type: "button", onClick: handleUp },
+              "+"
+            ),
+            Renos.createElement("span", null, "Count: " + count())
+          );
+        }
+
+        return Renos.createElement(Renos.Fragment, null, Header(), Counter());
+      }
+
+      const root = Renos.createRootNode(document.getElementById("root"));
+      root.render(App);
+    </script>
+  </body>
+</html>

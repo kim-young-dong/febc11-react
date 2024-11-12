@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Hello - React :()</title>
+  </head>
+
+  <body>
+    <div>
+      <h1>Hello HTML</h1>
+    </div>
+    <script type="text/javascript">
+      function App() {
+        const h1 = document.createElement("h1");
+        h1.appendChild(document.createTextNode("Hello React"));
+        return h1;
+      }
+
+      document.getElementById("root").appendChild(App());
+    </script>
+  </body>
+</html>

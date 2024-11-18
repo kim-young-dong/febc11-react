@@ -1,3 +1,4 @@
+import { produce } from "immer";
 import { useState } from "react";
 import EditAddress from "./components/EditAddress";
 
@@ -28,17 +29,17 @@ function App() {
       ],
     },
   });
-  const handleAddressChange = (index, value) => {
-    const newAddressBook = user.extra.addressBook.map((address, i) =>
-      i === index ? { ...address, value } : address
-    );
-    setUser({
-      ...user,
-      extra: {
-        ...user.extra,
-        addressBook: newAddressBook,
-      },
+  const handleAddressChange = (event, value) => {
+    const newState = produce(user, (draft) => {
+      const address = draft.extra.addressBook.find(
+        (address) => address.id === Number(event.target.name)
+      );
+      console.log(address);
+
+      address.value = even.target.value;
     });
+
+    setUser(newState);
   };
 
   return (
@@ -58,10 +59,12 @@ function App() {
           ))}
         </ul>
       </div>
-      <EditAddress
-        addresBook={user.extra.addressBook}
-        handleAddressChange={handleAddressChange}
-      />
+      <div>
+        <EditAddress
+          addressBook={user.extra.addressBook}
+          handleAddressChange={handleAddressChange}
+        />
+      </div>
     </>
   );
 }

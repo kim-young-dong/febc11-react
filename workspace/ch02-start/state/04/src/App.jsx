@@ -34,8 +34,6 @@ function App() {
       const address = draft.extra.addressBook.find(
         (address) => address.id === Number(event.target.name)
       );
-      console.log(address);
-
       address.value = even.target.value;
     });
 

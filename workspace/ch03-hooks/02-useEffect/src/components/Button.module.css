@@ -1,0 +1,59 @@
+.rounded-button {
+  background-color: #666; /* Gray */
+  border: none; /* Remove borders */
+  color: white; /* White text */
+  padding: 6px 18px; /* Padding */
+  text-align: center; /* Center text */
+  text-decoration: none; /* Remove underline */
+  display: inline-block; /* Display as inline-block */
+  font-size: 16px; /* Font size */
+  margin: 4px 2px; /* Margin */
+  cursor: pointer; /* Cursor pointer */
+  border-radius: 6px; /* Border radius */
+
+  &:hover {
+    background-color: #555; /* Dark background on hover */
+  }
+
+  &.button-primary {
+    background-color: #008cba; /* Blue */
+    &:hover {
+      background-color: #007a99; /* Darker blue */
+    }
+  }
+
+  &.button-secondary {
+    background-color: #f44336; /* Red */
+    &:hover {
+      background-color: #da190b; /* Darker red */
+    }
+  }
+
+  &.button-warning {
+    background-color: #ff9800; /* Orange */
+    &:hover {
+      background-color: #e68a00; /* Darker orange */
+    }
+  }
+
+  &.button-info {
+    background-color: #2196f3; /* Light blue */
+    &:hover {
+      background-color: #1e87eb; /* Darker light blue */
+    }
+  }
+
+  &.button-success {
+    background-color: #4caf50; /* Green */
+    &:hover {
+      background-color: #45a049; /* Darker green */
+    }
+  }
+
+  &.button-danger {
+    background-color: #f44336; /* Red */
+    &:hover {
+      background-color: #da190b; /* Darker red */
+    }
+  }
+}

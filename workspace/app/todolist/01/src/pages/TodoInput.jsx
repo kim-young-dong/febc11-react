@@ -1,5 +1,11 @@
 import { useState } from "react";
 
+import PropTypes from "prop-types";
+
+TodoInput.propTypes = {
+  onAddTodo: PropTypes.func.isRequired,
+};
+
 function TodoInput({ onAddTodo }) {
   const [title, setTitle] = useState("");
 

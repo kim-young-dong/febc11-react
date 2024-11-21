@@ -1,3 +1,4 @@
+import { useCallback } from "react";
 import PropTypes from "prop-types";
 
 Shipping.propTypes = {
@@ -6,6 +7,9 @@ Shipping.propTypes = {
 };
 
 function Shipping({ fees, handlePayment }) {
+  const handleClick = useCallback(() => {
+    handlePayment();
+  }, [handlePayment]);
   return (
     <>
       <h2>배송비</h2>
@@ -13,7 +17,7 @@ function Shipping({ fees, handlePayment }) {
         배송비: {fees.toLocaleString()}원<br />
       </div>
       <br />
-      <button type="button" onClick={handlePayment}>
+      <button type="button" onClick={handleClick}>
         결제
       </button>
     </>

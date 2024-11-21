@@ -8,6 +8,7 @@ Product.propTypes = {
 };
 
 function Product({ name, price, mainImage, content }) {
+  console.log("Product 렌더링");
   return (
     <>
       <h2>상품 설명</h2>

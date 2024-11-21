@@ -1,38 +1,61 @@
-import { useState, useMemo } from "react";
+import { useMemo, useState } from "react";
 
-import Header from "@components/Header";
+// 지정한 수가 소수인지 여부를 반환
+var isPrime = function (num) {
+  console.time("소요 시간");
+  console.log("소수 판별 시작.", num);
+
+  // 소수 판별 코드
+  let prime = num > 1; // 1은 소수가 아님
+
+  for (let i = 2; i < Math.sqrt(num); i++) {
+    // for(let i=2; i<num; i++){
+    if (num % i === 0) {
+      prime = false;
+      break;
+    }
+  }
+
+  console.log("소수 판별 결과.", prime);
+  console.timeEnd("소요 시간");
+  return prime;
+};
 
 function App() {
-  const [name, setName] = useState("");
-  const [age, setAge] = useState(0);
+  console.log("App 렌더링.");
+  const [name, setName] = useState("GD");
+  const [num, setNum] = useState(1);
 
-  // useMemo를 사용하여 소수 판별 함수를 최적화
-  const isPrime = useMemo(() => {
-    if (age < 2) return false;
-    for (let i = 2; i <= Math.sqrt(age); i++) {
-      if (age % i === 0) return false;
-    }
+  // const result = isPrime(num);
 
-    return true;
-  }, [age]);
+  // num이 바뀔때마다 다시 계산하고 num이 바뀌지 않으면 메모이제이션 된 값을 반환
+  const result = useMemo(() => isPrime(num), [num]);
 
   return (
     <>
-      <Header title="02 useEffect" />
+      <h1>05 useMemo - 함수의 반환값을 memoize</h1>
       <div>
-        name:{" "}
         <input
           type="text"
           value={name}
           onChange={(e) => setName(e.target.value)}
         />
-        age:{" "}
+        가 좋아하는 숫자:
         <input
           type="number"
-          value={age}
-          onChange={(e) => setAge(e.target.value)}
+          min="1"
+          max="1000000007"
+          value={num}
+          onChange={(e) => setNum(e.target.value)}
         />
-        <p>{isPrime ? "isPrime" : "notPrime"}</p>
+        <div>
+          {name}가 좋아하는 숫자 {num}: 소수가{" "}
+          {result ? (
+            <span style={{ color: "blue" }}>맞습니다.</span>
+          ) : (
+            <span style={{ color: "red" }}>아닙니다.</span>
+          )}
+        </div>
       </div>
     </>
   );

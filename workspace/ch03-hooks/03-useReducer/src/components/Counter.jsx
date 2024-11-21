@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useReducer } from "react";
 import Button from "./Button";
 import PropTypes from "prop-types";
 
@@ -8,7 +8,7 @@ Counter.propTypes = {
 
 function Counter({ children = "0" }) {
   const initCount = Number(children);
-  const [count, setCount] = useState(initCount);
+  const [count, dispatch] = useReducer(CounterReducer, initCount);
   const [step, setStep] = useState(1);
 
   useEffect(() => {
@@ -27,13 +27,13 @@ function Counter({ children = "0" }) {
   // }, []);
 
   const handleDown = () => {
-    setCount(count - step);
+    dispatch({ type: "DECREMENT", value: step });
   };
   const handleUp = () => {
-    setCount(count + step);
+    dispatch({ type: "INCREMENT", value: step });
   };
   const handleReset = () => {
-    setCount(initCount);
+    dispatch({ type: "RESET", value: initCount });
   };
 
   return (
@@ -62,6 +62,24 @@ function Counter({ children = "0" }) {
       </p>
     </div>
   );
+}
+
+function CounterReducer(state, { type, value }) {
+  let newState;
+
+  switch (type) {
+    case "INCREMENT":
+      newState = state + value;
+      break;
+    case "DECREMENT":
+      newState = state - value;
+      break;
+    default:
+      newState = value;
+      break;
+  }
+
+  return newState;
 }
 
 export default Counter;

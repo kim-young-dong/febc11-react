@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useReducer, useRef } from "react";
 import Button from "./Button";
 import PropTypes from "prop-types";
 
@@ -8,32 +8,17 @@ Counter.propTypes = {
 
 function Counter({ children = "0" }) {
   const initCount = Number(children);
-  const [count, setCount] = useState(initCount);
-  const [step, setStep] = useState(1);
-
-  useEffect(() => {
-    setTimeout(() => {
-      handleUp();
-      console.log(new Date().toLocaleTimeString());
-    }, 1000);
-  }, [step]);
-
-  // useEffect(() => {
-  //   console.log("count:");
-  //   const id = setInterval(() => {
-  //     console.log(new Date().toLocaleTimeString());
-  //   }, 1000);
-  //   return () => clearInterval(id);
-  // }, []);
+  const [count, dispatch] = useReducer(CounterReducer, initCount);
+  const step = useRef(1);
 
   const handleDown = () => {
-    setCount(count - step);
+    dispatch({ type: "DECREMENT", value: step.current });
   };
   const handleUp = () => {
-    setCount(count + step);
+    dispatch({ type: "INCREMENT", value: step.current });
   };
   const handleReset = () => {
-    setCount(initCount);
+    dispatch({ type: "RESET", value: initCount });
   };
 
   return (
@@ -43,8 +28,8 @@ function Counter({ children = "0" }) {
         id="step"
         type="number"
         style={{ width: "50px" }}
-        value={step}
-        onChange={(e) => setStep(Number(e.target.value))}
+        defaultValue={step.current}
+        onChange={(e) => (step.current = Number(e.target.value))}
       />
       <div>
         <Button id="decrement" color="danger" onClick={handleDown}>
@@ -58,10 +43,29 @@ function Counter({ children = "0" }) {
         </Button>
       </div>
       <p>
-        {count} 에서 {step}만큼 {count + step >= 0 ? "증가" : "감소"}
+        {count} 에서 {step.current}만큼{" "}
+        {count + step.current >= 0 ? "증가" : "감소"}
       </p>
     </div>
   );
+}
+
+function CounterReducer(state, { type, value }) {
+  let newState;
+
+  switch (type) {
+    case "INCREMENT":
+      newState = state + value;
+      break;
+    case "DECREMENT":
+      newState = state - value;
+      break;
+    default:
+      newState = value;
+      break;
+  }
+
+  return newState;
 }
 
 export default Counter;

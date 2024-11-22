@@ -1,0 +1,13 @@
+a {
+  margin-left: 5px;
+  margin-right: 10px;
+}
+
+.menu {
+  background-color: #f0f0f0;
+}
+
+.menu-dark {
+  background-color: #333;
+  color: white;
+}

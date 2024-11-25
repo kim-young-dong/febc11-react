@@ -1,8 +1,14 @@
 import { RouterProvider } from "react-router-dom";
-import router from "./routes";
+import { Suspense } from "react";
+// import router from "./routes";
+import router from "./routes.lazy";
 
 function App() {
-  return <RouterProvider router={router}></RouterProvider>;
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <RouterProvider router={router}></RouterProvider>
+    </Suspense>
+  );
 }
 
 export default App;

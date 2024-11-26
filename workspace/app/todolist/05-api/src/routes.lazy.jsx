@@ -1,13 +1,14 @@
-import Layout from "@components/Layout";
-import Home from "@pages/Home";
-import About from "@pages/About";
-import TodoList from "@pages/TodoList";
-import TodoDetail from "@pages/TodoDetail";
-import TodoAdd from "@pages/TodoAdd";
-import TodoEdit from "@pages/TodoEdit";
-import ErrorPage from "@pages/ErrorPage";
-
+import { lazy } from "react";
 import { createBrowserRouter } from "react-router-dom";
+
+const Layout = lazy(() => import("@components/Layout"));
+const Home = lazy(() => import("@pages/Home"));
+const About = lazy(() => import("@pages/About"));
+const TodoList = lazy(() => import("@pages/TodoList"));
+const TodoDetail = lazy(() => import("@pages/TodoDetail"));
+const TodoAdd = lazy(() => import("@pages/TodoAdd"));
+const TodoEdit = lazy(() => import("@pages/TodoEdit"));
+const ErrorPage = lazy(() => import("@pages/ErrorPage"));
 
 const router = createBrowserRouter(
   [
@@ -32,15 +33,15 @@ const router = createBrowserRouter(
               path: "add",
               element: <TodoAdd />,
             },
+          ],
+        },
+        {
+          path: "list/:_id",
+          element: <TodoDetail />,
+          children: [
             {
-              path: ":_id",
-              element: <TodoDetail />,
-              children: [
-                {
-                  path: "edit",
-                  element: <TodoEdit />,
-                },
-              ],
+              path: "edit",
+              element: <TodoEdit />,
             },
           ],
         },

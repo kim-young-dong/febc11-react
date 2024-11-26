@@ -1,39 +1,22 @@
 import { Link, Outlet } from "react-router-dom";
-import { useState, useEffect } from "react";
+import useAxiosInstance from "@hooks/useAxiosInstance";
 import TodoListItem from "./TodoListItem";
-
-const dummyData = [
-  {
-    _id: 1,
-    title: "Javascript 공부",
-    content: "열심히 하자",
-    done: false,
-    createdAt: "2024.11.21 16:49:00",
-    updatedAt: "2024.11.21 16:49:00",
-  },
-  {
-    _id: 2,
-    title: "Javascript 공부",
-    content: "열심히 하자",
-    done: false,
-    createdAt: "2024.11.21 16:49:00",
-    updatedAt: "2024.11.21 16:49:00",
-  },
-  {
-    _id: 3,
-    title: "Javascript 공부",
-    content: "열심히 하자",
-    done: false,
-    createdAt: "2024.11.21 16:49:00",
-    updatedAt: "2024.11.21 16:49:00",
-  },
-];
+import { useState, useEffect } from "react";
 
 function TodoList() {
-  const [todos, setTodos] = useState();
+  const [todos, setTodos] = useState(null);
+  const axios = useAxiosInstance();
 
   useEffect(() => {
-    setTodos(dummyData);
+    // Fetch data whenever the location changes
+    axios
+      .get("todolist")
+      .then((response) => {
+        setTodos(response.data.items);
+      })
+      .catch((error) => {
+        alert(error.response.data.message);
+      });
   }, []);
 
   const todoList = todos?.map((item) => (

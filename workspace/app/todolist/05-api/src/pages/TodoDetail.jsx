@@ -1,26 +1,27 @@
-import { Link, Outlet, useOutletContext, useParams } from "react-router-dom";
+import { Link, Outlet, useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
-
-const dummyData = {
-  item: {
-    _id: 5,
-    title: "Javascript 공부",
-    content: "열심히 하자",
-    done: false,
-    createdAt: "2024.11.21 16:49:00",
-    updatedAt: "2024.11.21 16:49:00",
-  },
-};
+import useAxiosInstance from "@hooks/useAxiosInstance";
 
 function TodoDetail() {
-  const { _id } = useParams();
   const [todoItem, setTodoItem] = useState();
 
-  useEffect(() => {
-    // API 호출
+  const { _id } = useParams();
+  const axios = useAxiosInstance();
 
-    setTodoItem(dummyData.item);
-  }, [_id]);
+  useEffect(() => {
+    fetchTodoItem();
+  }, []);
+
+  const fetchTodoItem = async () => {
+    axios
+      .get(`todolist/${_id}`)
+      .then((response) => {
+        setTodoItem(response.data.item);
+      })
+      .catch((error) => {
+        alert(error.response.data.message);
+      });
+  };
 
   return (
     <>
@@ -39,7 +40,8 @@ function TodoDetail() {
             </div>
             <Outlet
               context={{
-                todoItem,
+                todoItem: todoItem,
+                refetch: fetchTodoItem,
               }}
             />
           </>

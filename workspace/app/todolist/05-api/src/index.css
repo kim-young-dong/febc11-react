@@ -1,3 +1,33 @@
+nav {
+  display: flex;
+  justify-content: space-between;
+  background-color: #333;
+  padding: 10px;
+  & ul,
+  li {
+    display: inline;
+    list-style-type: none;
+  }
+}
+
+nav a {
+  color: white;
+  text-decoration: none;
+  padding: 8px 16px;
+
+  &.active {
+    background-color: #575757;
+  }
+}
+
+nav a:hover {
+  background-color: #575757;
+}
+a {
+  margin-left: 5px;
+  margin-right: 10px;
+}
+
 .input-error {
   font-size: 12px;
   color: red;

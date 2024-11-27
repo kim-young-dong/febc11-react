@@ -1,4 +1,4 @@
-import { Link, NavLink } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 
 function Header() {
   return (
@@ -8,13 +8,28 @@ function Header() {
         <div>
           <ul>
             <li>
-              <NavLink to="home">Home</NavLink>
+              <NavLink
+                to="home"
+                className={({ isActive }) => isActive && "active"}
+              >
+                Home
+              </NavLink>
             </li>
             <li>
-              <NavLink to="about">About</NavLink>
+              <NavLink
+                to="about"
+                className={({ isActive }) => isActive && "active"}
+              >
+                About
+              </NavLink>
             </li>
             <li>
-              <NavLink to="list">TodoList</NavLink>
+              <NavLink
+                to="list"
+                className={({ isActive }) => isActive && "active"}
+              >
+                TodoList
+              </NavLink>
             </li>
           </ul>
         </div>

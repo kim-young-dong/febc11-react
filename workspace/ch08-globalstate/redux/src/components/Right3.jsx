@@ -1,7 +1,6 @@
-import { useEffect, useReducer } from "react";
+import { useEffect } from "react";
 import { useDispatch } from "react-redux";
-import { COUNTER_ACTION } from "@redux/counterActionCreator";
-import counterReducer from "@redux/counterReducer";
+import counterActionCreator from "@redux/counterActionCreator";
 
 function Right3() {
   const dispatch = useDispatch();
@@ -9,13 +8,13 @@ function Right3() {
     console.log("      # Right3 렌더링.");
   });
   const handleUp = () => {
-    dispatch({ type: COUNTER_ACTION.UP, payload: { step: 1 } });
+    dispatch(counterActionCreator.countUp(1));
   };
   const handleDown = () => {
-    dispatch({ type: COUNTER_ACTION.DOWN, payload: { step: 1 } });
+    dispatch(counterActionCreator.countDown(1));
   };
   const handleReset = () => {
-    dispatch({ type: COUNTER_ACTION.RESET });
+    dispatch(counterActionCreator.countReset());
   };
 
   return (

@@ -3,7 +3,7 @@ import { useSelector } from "react-redux";
 
 function Left3() {
   const count = useSelector((state) => {
-    return state.counter.value;
+    return state.myCounter.count;
   });
 
   const time = useSelector((state) => {
@@ -17,6 +17,7 @@ function Left3() {
     <div>
       <h3>Left3</h3>
       <span>{time}</span>
+      <br />
       <span>{count}</span>
     </div>
   );

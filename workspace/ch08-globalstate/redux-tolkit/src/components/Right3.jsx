@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
-import { increment, decrement, incrementByAmount } from "@redux/counterSlice";
+import { increment, decrement, reset } from "@redux/myCounterSlice";
+// import { increment, decrement, reset } from "@redux/counterSlice";
 import { getNow } from "@redux/timeSlice";
 
 function Right3() {
@@ -9,14 +10,22 @@ function Right3() {
     console.log("      # Right3 렌더링.");
   });
   const handleUp = () => {
-    dispatch(increment());
+    dispatch(
+      increment({
+        step: 1,
+      })
+    );
   };
   const handleDown = () => {
-    dispatch(decrement());
+    dispatch(
+      decrement({
+        step: 1,
+      })
+    );
   };
   const handleReset = () => {
-    dispatch(incrementByAmount());
-    dispatch(getNow());
+    dispatch(reset());
+    // dispatch(getNow());
   };
 
   return (

@@ -1,13 +1,20 @@
-import { useEffect } from 'react';
-
+import { useEffect } from "react";
+import useCounterState from "@zustand/counter";
 function Right3() {
-  useEffect(()=>{
-    console.log('      # Right3 렌더링.');
+  const countUp = useCounterState((state) => state.countUp);
+  useEffect(() => {
+    console.log("      # Right3 렌더링.");
   });
   return (
     <div>
       <h3>Right3</h3>
-      <button onClick={ () => {} }>+1</button>
+      <button
+        onClick={() => {
+          countUp(4);
+        }}
+      >
+        +4
+      </button>
     </div>
   );
 }

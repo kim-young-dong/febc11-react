@@ -36,6 +36,7 @@ function TodoList() {
     queryKey: ["todolist", params],
     queryFn: () => axios.get("/todolist", { params }),
     select: (res) => res.data,
+    // refetchInterval: 1000 * 2, // 2초
     staleTime: 1000 * 60, // 5분
   });
 

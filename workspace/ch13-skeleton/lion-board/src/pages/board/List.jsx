@@ -1,6 +1,30 @@
-import { Link } from "react-router-dom";
+import ListItem from "@pages/board/ListItem";
+import { Link, useParams } from "react-router-dom";
+import { useQuery } from "@tanstack/react-query";
+import useAxiosInstance from "@hooks/useAxiosInstance";
 
 export default function List() {
+  const axios = useAxiosInstance();
+
+  // /:type
+  // localhost/info => useParams()의 리턴값 { type: info }
+  const { type } = useParams();
+
+  const { data } = useQuery({
+    queryKey: ["posts", type],
+    queryFn: () => axios.get("/posts", { params: { type } }),
+    select: (res) => res.data,
+    staleTime: 1000 * 10,
+  });
+
+  console.log(data);
+
+  if (!data) {
+    return <div>로딩중...</div>;
+  }
+
+  const list = data.item.map((item) => <ListItem key={item._id} item={item} />);
+
   return (
     <main className="min-w-80 p-10">
       <div className="text-center py-4">
@@ -56,36 +80,7 @@ export default function List() {
               </th>
             </tr>
           </thead>
-          <tbody>
-            <tr className="border-b border-gray-200 hover:bg-gray-200 dark:hover:bg-gray-700 transition duration-300 ease-in-out">
-              <td className="p-2 text-center">2</td>
-              <td className="p-2 truncate indent-4">
-                <Link to="/info/2" className="cursor-pointer">
-                  안녕하세요.
-                </Link>
-              </td>
-              <td className="p-2 text-center truncate">용쌤</td>
-              <td className="p-2 text-center hidden sm:table-cell">29</td>
-              <td className="p-2 text-center hidden sm:table-cell">2</td>
-              <td className="p-2 truncate text-center hidden sm:table-cell">
-                2024.07.05 13:39:23
-              </td>
-            </tr>
-            <tr className="border-b border-gray-200 hover:bg-gray-200 dark:hover:bg-gray-700 transition duration-300 ease-in-out">
-              <td className="p-2 text-center">1</td>
-              <td className="p-2 truncate indent-4">
-                <Link to="/info/1" className="cursor-pointer">
-                  좋은 소식이 있습니다.
-                </Link>
-              </td>
-              <td className="p-2 text-center truncate">제이지</td>
-              <td className="p-2 text-center hidden sm:table-cell">22</td>
-              <td className="p-2 text-center hidden sm:table-cell">5</td>
-              <td className="p-2 truncate text-center hidden sm:table-cell">
-                2024.07.03 17:59:13
-              </td>
-            </tr>
-          </tbody>
+          <tbody>{list}</tbody>
         </table>
         <hr />
 

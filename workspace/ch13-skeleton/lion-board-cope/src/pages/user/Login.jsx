@@ -18,6 +18,8 @@ export default function Login() {
     onSuccess: (res) => {
       console.log(res);
       alert(res.data.item.name + "님, 로그인 되었습니다.");
+      localStorage.setItem("accessToken", res.data.item.token.accessToken);
+      localStorage.setItem("refreshToken", res.data.item.token.refreshToken);
       navigate(`/`);
     },
     onError: (err) => {

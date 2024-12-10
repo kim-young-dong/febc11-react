@@ -1,5 +1,7 @@
+import useAxiosInstance from "@hooks/useAxiosInstance";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import PropTypes from "prop-types";
-import { Link } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 
 CommentListItem.propTypes = {
   comment: PropTypes.shape({
@@ -14,6 +16,24 @@ CommentListItem.propTypes = {
 };
 
 export default function CommentListItem({ comment }) {
+  const axios = useAxiosInstance();
+  const navigate = useNavigate();
+  const { type, _id } = useParams();
+
+  const queryClient = useQueryClient();
+
+  const deleteComment = useMutation({
+    mutationFn: () => {
+      return axios.delete(`/posts/${_id}/replies/${comment._id}`);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries(["posts", _id]);
+      navigate(`/posts/${_id}`);
+    },
+    onError: (err) => {
+      console.error(err);
+    },
+  });
   return (
     <div className="shadow-md rounded-lg p-4 mb-4">
       <div className="flex justify-between comments-center mb-2">
@@ -33,15 +53,14 @@ export default function CommentListItem({ comment }) {
         </time>
       </div>
       <div className="flex justify-between comments-center mb-2">
-        <form action="#">
-          <pre className="whitespace-pre-wrap text-sm">{comment.content}</pre>
-          <button
-            type="submit"
-            className="bg-red-500 py-1 px-2 text-sm text-white font-semibold ml-2 hover:bg-amber-400 rounded"
-          >
-            삭제
-          </button>
-        </form>
+        <pre className="whitespace-pre-wrap text-sm">{comment.content}</pre>
+        <button
+          type="submit"
+          className="bg-red-500 py-1 px-2 text-sm text-white font-semibold ml-2 hover:bg-amber-400 rounded"
+          onClick={deleteComment.mutate}
+        >
+          삭제
+        </button>
       </div>
     </div>
   );

@@ -11,6 +11,7 @@ export default function CommentNew() {
     register,
     handleSubmit,
     formState: { errors },
+    reset,
   } = useForm();
 
   const axios = useAxiosInstance();
@@ -27,7 +28,8 @@ export default function CommentNew() {
     },
     onSuccess: () => {
       alert("댓글이 등록되었습니다.");
-      queryClient.invalidateQueries(["posts", _id]);
+      reset();
+      queryClient.invalidateQueries({ queryKey: ["posts", _id] });
       navigate(`/posts/${_id}`);
     },
     onError: (err) => {

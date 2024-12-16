@@ -1,38 +1,59 @@
-export default function Page() {
+import Link from "next/link";
+import CommentListItem from "./CommentItem";
+// import CommentListItem from "@/app/[type]/[_id]/CommentItem";
+import { BASE_URL } from "@/config/index";
+
+async function fetchPost(_id) {
+  const response = await fetch(`${BASE_URL}/posts/${_id}`, {
+    headers: {
+      "Content-Type": "application/json",
+      "client-id": "00-brunch",
+    },
+  });
+  return await response.json();
+}
+
+export default async function Page({ params }) {
+  const { _id } = await params;
+
+  const { item } = await fetchPost(_id);
+
+  const commentList =
+    item.replies &&
+    item.replies.map((item) => {
+      return <CommentListItem key={item._id} item={item} />;
+    });
+
   return (
     <>
       <main className="container mx-auto mt-4 px-4">
         <section className="mb-8 p-4">
           <form action="/info">
-            <div className="font-semibold text-xl">
-              제목 : 좋은 소식이 있습니다.
+            <div className="font-semibold text-xl">{item.title}</div>
+            <div className="text-right text-gray-400">
+              작성자 : {item.user.name}
             </div>
-            <div className="text-right text-gray-400">작성자 : 제이지</div>
             <div className="mb-4">
               <div>
                 <pre className="font-roboto w-full p-2 whitespace-pre-wrap">
-                  좋은 소식을 가지고 왔습니다.
-                  <br />
-                  오늘 드디어 최종 면접을 합니다.
-                  <br />
-                  많이 응원해 주세요^^
+                  {item.content}
                 </pre>
               </div>
               <hr />
             </div>
             <div className="flex justify-end my-4">
-              <a
+              <Link
                 href="/info"
                 className="bg-orange-500 py-1 px-4 text-base text-white font-semibold ml-2 hover:bg-amber-400 rounded"
               >
                 목록
-              </a>
-              <a
+              </Link>
+              <Link
                 href="/info/1/edit"
                 className="bg-gray-900 py-1 px-4 text-base text-white font-semibold ml-2 hover:bg-amber-400 rounded"
               >
                 수정
-              </a>
+              </Link>
               <button
                 type="submit"
                 className="bg-red-500 py-1 px-4 text-base text-white font-semibold ml-2 hover:bg-amber-400 rounded"
@@ -44,67 +65,9 @@ export default function Page() {
         </section>
 
         <section className="mb-8">
-          <h4 className="mt-8 mb-4 ml-2">댓글 2개</h4>
+          <h4 className="mt-8 mb-4 ml-2">댓글 {item.replies?.length || 0}개</h4>
 
-          <div className="shadow-md rounded-lg p-4 mb-4">
-            <div className="flex justify-between items-center mb-2">
-              <img
-                className="w-8 mr-2 rounded-full"
-                src="https://api.fesp.shop/files/00-sample/user-muzi.webp"
-                alt="어피치 프로필 이미지"
-              />
-              <a href="" className="text-orange-400">
-                어피치
-              </a>
-              <time
-                className="ml-auto text-gray-500"
-                dateTime="2024.07.02 14:11:22"
-              >
-                2024.07.02 14:11:22
-              </time>
-            </div>
-            <div className="flex justify-between items-center mb-2">
-              <form action="#">
-                <pre className="whitespace-pre-wrap text-sm">화이팅!</pre>
-                <button
-                  type="submit"
-                  className="bg-red-500 py-1 px-2 text-sm text-white font-semibold ml-2 hover:bg-amber-400 rounded"
-                >
-                  삭제
-                </button>
-              </form>
-            </div>
-          </div>
-
-          <div className="shadow-md rounded-lg p-4 mb-4">
-            <div className="flex justify-between items-center mb-2">
-              <img
-                className="w-8 mr-2 rounded-full"
-                src="https://api.fesp.shop/files/00-sample/user-muzi.webp"
-                alt="무지 프로필 이미지"
-              />
-              <a href="" className="text-orange-400">
-                무지
-              </a>
-              <time
-                className="ml-auto text-gray-500"
-                dateTime="2024.07.07 12:34:56"
-              >
-                2024.07.07 12:34:56
-              </time>
-            </div>
-            <div className="flex justify-between items-center mb-2">
-              <form action="#">
-                <pre className="whitespace-pre-wrap text-sm">축하해요~~~</pre>
-                <button
-                  type="submit"
-                  className="bg-red-500 py-1 px-2 text-sm text-white font-semibold ml-2 hover:bg-amber-400 rounded"
-                >
-                  삭제
-                </button>
-              </form>
-            </div>
-          </div>
+          {commentList}
 
           <div className="p-4 border border-gray-200 rounded-lg">
             <h4 className="mb-4">새로운 댓글을 추가하세요.</h4>

@@ -2,15 +2,34 @@ import Link from "next/link";
 import ListItem from "./ListItem";
 // import ListItem from "@/app/[type]/ListItem";
 import Pagination from "@/components/Pagination";
-import { BASE_URL } from "@/config/index";
+import { BASE_URL, HEADERS } from "@/config/index";
+
+export async function generateMetadata({ params }) {
+  const { type } = await params;
+  let typeTitle = "";
+  switch (type) {
+    case "info":
+      typeTitle = "정보 공유";
+      break;
+    case "free":
+      typeTitle = "자유";
+      break;
+    case "qna":
+      typeTitle = "질문";
+      break;
+    default:
+      typeTitle = "";
+  }
+  return {
+    title: `${typeTitle} 게시물 목록`,
+    description: `${typeTitle} 게시판`,
+  };
+}
 
 async function fetchPostList(type, page = 1) {
-  const response = await fetch(`${BASE_URL}/posts`, {
-    headers: {
-      "Content-Type": "application/json",
-      "client-id": "00-brunch",
-    },
-    params: { type, page, limit: 30, delay: 3000 },
+  const params = new URLSearchParams({ type, page, limit: 30 });
+  const response = await fetch(`${BASE_URL}/posts?${params.toString()}`, {
+    headers: HEADERS,
   });
   return await response.json();
 }
@@ -19,6 +38,7 @@ export default async function Page({ params }) {
   const { type, page } = await params;
 
   const data = await fetchPostList(type, page);
+  // console.log(data);
 
   const postList = data.item.map((item) => {
     return <ListItem key={item._id} item={item} />;
@@ -48,7 +68,7 @@ export default async function Page({ params }) {
           </form>
 
           <Link
-            href="/info/new"
+            href={`/${type}/new`}
             className="bg-orange-500 py-1 px-4 text-base text-white font-semibold ml-2 hover:bg-amber-400 rounded"
           >
             글작성

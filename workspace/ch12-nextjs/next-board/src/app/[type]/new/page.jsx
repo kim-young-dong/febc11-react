@@ -1,43 +1,8 @@
 import Link from "next/link";
-import { BASE_URL } from "@/config/index";
+import { addPost } from "@/actions/postAction";
 
-async function createPost(type, title, content) {
-  const response = await fetch(`${BASE_URL}/posts`, {
-    headers: {
-      "Content-Type": "application/json",
-      "client-id": "00-brunch",
-    },
-    method: "POST",
-    body: JSON.stringify({ type, title, content }),
-  });
-  return await response.json();
-}
-
-export default function Page({ params }) {
-  const { type } = params;
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    const title = e.target.title.value;
-    const content = e.target.content.value;
-
-    if (!title) {
-      alert("제목을 입력하세요.");
-      return;
-    }
-    if (!content) {
-      alert("내용을 입력하세요.");
-      return;
-    }
-
-    const data = await createPost({ type, title, content });
-    if (data) {
-      alert("등록되었습니다.");
-      router.push("/info");
-    } else {
-      alert("등록에 실패했습니다.");
-    }
-  };
-
+export default async function Page({ params }) {
+  const { type } = await params;
   return (
     <>
       <main className="min-w-[320px] p-4">
@@ -47,7 +12,8 @@ export default function Page({ params }) {
           </h2>
         </div>
         <section className="mb-8 p-4">
-          <form action="/info/1">
+          <form action={addPost}>
+            <input type="hidden" name="type" value={type} />
             <div className="my-4">
               <label className="block text-lg content-center" htmlFor="title">
                 제목

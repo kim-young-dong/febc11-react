@@ -1,4 +1,26 @@
 import Link from "next/link";
+import Loading from "./loading";
+import { Suspense } from "react";
+
+export const metadata = {
+  title: {
+    default: "멋쟁이 사자처럼 커뮤니티",
+    template: "%s | 멋사컴",
+  },
+  description:
+    "다양한 주제의 커뮤니티와 활발한 소통을 위한 플랫폼입니다. 관심사에 따라 참여하고, 의견을 나누세요.",
+  keywords: "커뮤니티, 소통, 포럼, 관심사, 온라인 모임, 커뮤니티 서비스",
+  author: "Front End Boot Camp",
+
+  openGraph: {
+    title: "멋사컴에 오신걸 환영합니다.",
+    description: "유용한 정보를 나누고 공유하세요.",
+    image: "/images/febc.png",
+    url: "https://board.fesp.shop",
+    type: "website",
+    site_name: "멋사컴",
+  },
+};
 
 export default function RootLayout({ children }) {
   return (
@@ -108,7 +130,7 @@ export default function RootLayout({ children }) {
                 </div>
               </nav>
             </header>
-            {children}
+            <Suspense fallback={<Loading />}>{children}</Suspense>
             <footer className="p-4 pb-12 w-full border-t border-t-slate-200  dark:border-t-slate-500 dark:bg-gray-600 text-gray-600 dark:text-white transition-color duration-500 ease-in-out">
               <div className="min-w-[320px] flex flex-wrap gap-4 justify-center items-center text-sm text-slate-400">
                 <Link

@@ -1,28 +1,29 @@
 import Link from "next/link";
-import CommentListItem from "./CommentItem";
+import CommentList from "./CommentList";
 // import CommentListItem from "@/app/[type]/[_id]/CommentItem";
-import { BASE_URL } from "@/config/index";
+import { BASE_URL, HEADERS } from "@/config/index";
 
 async function fetchPost(_id) {
+  console.log("fetchPost from Page");
   const response = await fetch(`${BASE_URL}/posts/${_id}`, {
-    headers: {
-      "Content-Type": "application/json",
-      "client-id": "00-brunch",
-    },
+    headers: HEADERS,
   });
   return await response.json();
 }
 
-export default async function Page({ params }) {
+export async function generateMetadata({ params }) {
   const { _id } = await params;
-
   const { item } = await fetchPost(_id);
 
-  const commentList =
-    item.replies &&
-    item.replies.map((item) => {
-      return <CommentListItem key={item._id} item={item} />;
-    });
+  return {
+    title: `${item.title}`,
+    description: `${item.content}`,
+  };
+}
+
+export default async function Page({ params }) {
+  const { _id } = await params;
+  const { item } = await fetchPost(_id);
 
   return (
     <>
@@ -67,7 +68,7 @@ export default async function Page({ params }) {
         <section className="mb-8">
           <h4 className="mt-8 mb-4 ml-2">댓글 {item.replies?.length || 0}개</h4>
 
-          {commentList}
+          <CommentList _id={_id} />
 
           <div className="p-4 border border-gray-200 rounded-lg">
             <h4 className="mb-4">새로운 댓글을 추가하세요.</h4>

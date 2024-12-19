@@ -7,7 +7,7 @@ export default function Pagination({ currentPage, totalPage }) {
       return (
         <li
           key={item}
-          className={`font-bold ${item === currentPage && "text-blue-700"}`}
+          className={`font-bold ${item == currentPage ? "text-blue-700" : ""}`}
         >
           <Link href={`/info?page=${item}`}>{item}</Link>
         </li>
